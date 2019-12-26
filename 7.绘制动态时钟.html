@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- border:1px solid #aaa;边框 -->
+  <canvas id="canvas" style="display:block;margin: 50px auto;">
+    当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试
+  </canvas>
+
+  <script src="./js/digit.js"></script>
+  <script>
+    // 画布的长宽
+    var CTX_WIDTH = 1024  // 画布的宽
+    var CTX_HEIGHT = 768  // 画布的高
+    var CTX_RADII = 8     // 圆的半径
+    var MARGIN_TOP = 60   // 数字上距离
+    var MARGIN_LEFT = 30  // 数字左距离
+
+    // js的月份-1,6实际是7月份
+    const endTime = new Date(2019, 11, 26, 18, 30, 0)
+    var curShowTimeSeconds = 0
+
+    window.onload = function () {
+
+
+      // 创建画布
+      var canvas = document.getElementById("canvas");
+      // 画布的大小
+      canvas.width = CTX_WIDTH
+      canvas.height = CTX_HEIGHT
+      // 下面所有调用的函数都是基于context这个上下文环境来进行的
+      var context = canvas.getContext("2d");
+
+      curShowTimeSeconds = getCurrentShowTimeSeconds()
+
+      setInterval(() => {
+        render(context);
+        update();
+      }, 50);
+
+    }
+
+    function getCurrentShowTimeSeconds() {
+      var curTime = new Date();
+      var ret = endTime.getTime() - curTime.getTime();
+      if (ret <= 0) {
+        alert('下班了,请不要浪费电!')
+      }
+      ret = Math.round(ret / 1000)
+
+      return ret >= 0 ? ret : 0
+    }
+
+    function update() {
+      var nextShowTimeSeconds = getCurrentShowTimeSeconds();
+
+      var nextHours = parseInt(nextShowTimeSeconds / 3600);
+      var nextMinutes = parseInt((nextShowTimeSeconds - nextHours * 3600) / 60)
+      var nextSeconds = nextShowTimeSeconds % 60
+
+      var curHours = parseInt(curShowTimeSeconds / 3600);
+      var curMinutes = parseInt((curShowTimeSeconds - nextHours * 3600) / 60)
+      var curSeconds = curShowTimeSeconds % 60
+      
+      if(nextSeconds != curSeconds) {
+        curShowTimeSeconds = nextShowTimeSeconds
+      }
+    }
+
+    // 需要绘制的数字
+    function render(cxt) {
+
+      // 初始化画布
+      cxt.clearRect(0, 0, CTX_WIDTH, CTX_HEIGHT)
+
+      var hours = parseInt(curShowTimeSeconds / 3600);
+      var minutes = parseInt((curShowTimeSeconds - hours * 3600) / 60);
+      var seconds = curShowTimeSeconds % 60
+
+      // 绘制圆的函数(renderDigit an arc)
+      renderDigit(MARGIN_LEFT, MARGIN_TOP, parseInt(hours / 10), cxt) // 时 十
+      renderDigit(MARGIN_LEFT + 15 * (CTX_RADII + 1), MARGIN_TOP, parseInt(hours % 10), cxt) // 时 个
+      renderDigit(MARGIN_LEFT + 30 * (CTX_RADII + 1), MARGIN_TOP, 10, cxt) // :
+      renderDigit(MARGIN_LEFT + 39 * (CTX_RADII + 1), MARGIN_TOP, parseInt(minutes / 10), cxt) // 分 十
+      renderDigit(MARGIN_LEFT + 54 * (CTX_RADII + 1), MARGIN_TOP, parseInt(minutes % 10), cxt) // 分 个
+      renderDigit(MARGIN_LEFT + 69 * (CTX_RADII + 1), MARGIN_TOP, 10, cxt) // :
+      renderDigit(MARGIN_LEFT + 78 * (CTX_RADII + 1), MARGIN_TOP, parseInt(seconds / 10), cxt) // 秒 十
+      renderDigit(MARGIN_LEFT + 93 * (CTX_RADII + 1), MARGIN_TOP, parseInt(seconds % 10), cxt) // 秒 个
+    }
+
+    // 绘制数字方法
+    function renderDigit(x, y, nub, ctx) { // 数字 nub
+      for (var i = 0; i < digit[nub].length; i++) { // 纵坐标i
+        for (var j = 0; j < digit[nub][i].length; j++) { // 横坐标j
+          if (digit[nub][i][j] !== 0) {
+            ctx.beginPath();
+            ctx.arc(
+              10 + 2 * (CTX_RADII + 1) * j + x, 10 + 2 * (CTX_RADII + 1) * i + y, CTX_RADII,
+              0 * Math.PI, 2 * Math.PI
+            )
+            ctx.closePath();
+            ctx.fillStyle = "rgb(2,100,30)"; // 填充的颜色
+            ctx.fill(); // 进行填充
+          }
+
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

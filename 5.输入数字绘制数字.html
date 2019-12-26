@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<style>
+  #box {
+    position: fixed;
+    left: 50px;
+    top: 50px;
+  }
+</style>
+
+<body>
+  <canvas id="canvas" style="border:1px solid #aaa;display:block;margin: 50px auto;">
+    当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试
+  </canvas>
+
+  <div id="box">
+    <input v-model="message" placeholder="edit me">
+    <div>{{message}}</div>
+  </div>
+  <script src="./js/digit.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    // 使用vue的方法
+    window.onload = function () {
+      var CTX_WIDTH = 1024
+      var CTX_HEIGHT = 768
+      var CTX_RADII = 10
+      // 创建画布
+      var canvas = document.getElementById("canvas");
+      // 画布的大小
+      canvas.width = CTX_WIDTH
+      canvas.height = CTX_HEIGHT
+      // 下面所有调用的函数都是基于context这个上下文环境来进行的
+      var context = canvas.getContext("2d");
+      new Vue({
+        el: '#box',
+        data: {
+          message: ''
+        },
+        watch: {
+          // 如果 `message` 发生改变，这个函数(draw)就会运行
+          message: function (newQuestion, oldQuestion) {
+            console.log()
+            // 当无数字时,不执行
+            if (newQuestion !== '' && newQuestion <= 10) {
+              this.draw(newQuestion)
+            } else if (newQuestion > 10) {
+              alert('大于10的数,还没做')
+              this.message = oldQuestion
+            }
+          }
+        },
+        methods: {
+          // 绘制数字方法
+          draw(nub) { // 数字 nub
+            // 利用clearRect,清空画布
+            context.clearRect(0,0,canvas.width,canvas.height);
+            // 循环绘制圆
+            for (var i = 0; i < digit[nub].length; i++) { // 纵坐标i
+              for (var j = 0; j < digit[nub][i].length; j++) { // 横坐标j
+                if (digit[nub][i][j] !== 0) {
+                  context.beginPath();
+                  context.arc(
+                    50 + 2 * (CTX_RADII + 1) * j, 50 + 2 * (CTX_RADII + 1) * i, CTX_RADII,
+                    0 * Math.PI, 2 * Math.PI
+                  )
+                  context.closePath();
+                  context.fillStyle = "rgb(2,100,30)"; // 填充的颜色
+                  context.fill(); // 进行填充
+                }
+
+              }
+            }
+          }
+        },
+      })
+    }
+
+
+
+    // 未使用vue
+    // // 画布的长宽
+    // var CTX_WIDTH = 1024
+    // var CTX_HEIGHT = 768
+    // var CTX_RADII = 10
+
+    // window.onload = function () {
+    //   // 创建画布
+    //   var canvas = document.getElementById("canvas");
+    //   // 画布的大小
+    //   canvas.width = CTX_WIDTH
+    //   canvas.height = CTX_HEIGHT
+    //   // 下面所有调用的函数都是基于context这个上下文环境来进行的
+    //   var context = canvas.getContext("2d");
+    //   //console.log(digit[0][0][1])
+    //   // 绘制圆的函数(Draw an arc)
+    //   draw(5, context)
+    // }
+    // // 绘制数字方法
+    // function draw(nub, ctx) { // 数字 nub
+    //   for (var i = 0; i < digit[nub].length; i++) { // 纵坐标i
+    //     for (var j = 0; j < digit[nub][i].length; j++) { // 横坐标j
+    //       if (digit[nub][i][j] !== 0) {
+    //         ctx.beginPath();
+    //         ctx.arc(
+    //           50 + 2 * (CTX_RADII + 1) * j, 50 + 2 * (CTX_RADII + 1) * i, CTX_RADII,
+    //           0 * Math.PI, 2 * Math.PI
+    //         )
+    //         ctx.closePath();
+    //         ctx.fillStyle = "rgb(2,100,30)"; // 填充的颜色
+    //         ctx.fill(); // 进行填充
+    //       }
+
+    //     }
+    //   }
+    // }
+
+  </script>
+
+</body>
+
+</html>

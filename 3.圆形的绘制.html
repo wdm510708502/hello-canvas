@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="canvas" width="1024" height="768" style="border:1px solid #aaa;display:block;margin: 50px auto;">
+    当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试
+  </canvas>
+
+  <script>
+    window.onload = function () {
+      // 创建画布
+      var canvas = document.getElementById("canvas");
+      // 下面所有调用的函数都是基于context这个上下文环境来进行的
+      var context = canvas.getContext("2d");
+      // 绘制圆的函数(Draw an arc)
+      context.arc(
+        centerx(圆心横坐标), centery(原型纵坐标), radius(半径的长度),
+        startingAngle(绘制的起点0*Math.PI), endingAngle(绘制的终点2*Math.PI),
+        anticlockwise = false(默认为false顺时针, true为逆时针)
+      )
+    }
+
+  </script>
+</body>
+
+</html>

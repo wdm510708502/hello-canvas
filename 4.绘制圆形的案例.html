@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="canvas" width="1024" height="768" style="border:1px solid #aaa;display:block;margin: 50px auto;">
+    当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试
+  </canvas>
+
+  <script>
+    var CTX_WIDTH = 1024
+    var CTX_HEIGHT = 768
+    window.onload = function () {
+      // 创建画布
+      var canvas = document.getElementById("canvas");
+      // 画布长宽
+      canvas.width = CTX_WIDTH
+      canvas.height = CTX_HEIGHT
+      // 下面所有调用的函数都是基于context这个上下文环境来进行的
+      var context = canvas.getContext("2d");
+
+      context.beginPath()
+      context.arc(
+        300, 200, 100,
+        0, 1.5 * Math.PI
+      )
+      context.stroke(); // 进行绘制线条
+
+      context.beginPath()
+      context.arc(
+        300, 450, 100,
+        0, 2 * Math.PI
+      )
+      context.stroke(); // 进行绘制线条
+
+      context.beginPath()
+      context.arc(
+        550, 200, 100,
+        0, 1.5 * Math.PI
+      )
+      context.fillStyle = "rgb(2,100,30)"; // 填充的颜色
+      context.fill(); // 进行填充
+
+      context.beginPath()
+      context.arc(
+        550, 450, 100,
+        0, 2 * Math.PI
+      )
+      context.fillStyle = "red"; // 填充的颜色
+      context.fill(); // 进行填充
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>hello-canvas</title>
+  </head>
+  <body>
+    <canvas
+      id="canvas"
+      width="1024"
+      height="768"
+      style="border:1px solid #aaa;display:block;margin: 50px auto;"
+    >
+      当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试
+    </canvas>
+  </body>
+  <script>
+    window.onload = function() {
+      var canvas = document.getElementById("canvas");
+
+      // 也可通过这种方法制定canvas画布的大小
+      // canvas.width = 1024;
+      // canvas.height = 768;
+      // 判断浏览器是否支持canvas
+      if (canvas.getContext("2d")) {
+        // 下面所有调用的函数都是基于context这个上下文环境来进行的
+        var context = canvas.getContext("2d");
+        // 使用context进行绘制,canvas绘图是状态绘图,先状态(路径),再调用函数绘制
+
+        // 状态设置,坐标原点在左上角,以右为x正轴,下为y正轴
+        context.beginPath(); // 本次绘制路径的起点
+        context.moveTo(100, 100); // 起点
+        context.lineTo(700, 700); // 终点(可继续接lineTo)
+        context.lineTo(100, 700);
+        // context.lineTo(100, 100);
+        context.closePath(); // 本次绘制路径的终点(若终点没有回到起点的路径,
+                             // 则会自动连接起点与终点,如若不想,则可不写closePath)
+
+        context.lineWidth = 5; // 线条宽度
+        context.strokeStyle = "#005588"; // 线条的颜色
+
+        // 绘制函数
+        context.stroke(); // 进行绘制线条
+
+        context.beginPath(); // 本次绘制路径的起点
+        context.moveTo(200, 100); // 起点
+        context.lineTo(700, 600); // 终点(可继续接lineTo)
+        context.closePath(); // 本次绘制路径的终点
+        context.strokeStyle = "red"; // 线条的颜色
+
+        context.stroke(); // 进行绘制线条
+
+        //context.fillStyle = "rgb(2,100,30)"; // 填充的颜色
+        //context.fill(); // 进行填充
+      } else {
+        alert("当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试");
+      }
+    };
+  </script>
+</html>

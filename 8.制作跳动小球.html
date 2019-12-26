@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <canvas
+  id="canvas"
+  style="border:1px solid #aaa;display:block;margin: 50px auto;"
+>
+  当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试
+</canvas>
+
+<script>
+  // g: 加速度, vx: x轴速度,vy: y轴的速度 (速度都以向量表示,所以可为负数)
+  var ball = { x:512 , y:100 , r:20 , g:2 , vx:-4, vy:0 , color: '#005588' }
+  window.onload = function() {
+    var canvas = document.getElementById("canvas");
+
+    // 也可通过这种方法制定canvas画布的大小
+    canvas.width = 1024;
+    canvas.height = 768;
+    // 判断浏览器是否支持canvas
+    if (canvas.getContext("2d")) {
+      // 下面所有调用的函数都是基于context这个上下文环境来进行的
+      var context = canvas.getContext("2d");
+      
+      setInterval(() => {
+        render(context)
+        update()
+      }, 50);
+      
+      
+
+    } else {
+      alert("当前浏览器不支持canvas,请更新浏览器或者升级浏览器后再试");
+    }
+  };
+  function update() {
+    ball.x += ball.vx
+    ball.y += ball.vy
+    ball.vy += ball.g
+
+    if(ball.y >= 768 - ball.r) {
+      ball.y = 768 - ball.r
+    }
+  }
+  function render(cxt) {
+    cxt.clearRect(0,0,cxt.canvas.width,cxt.canvas.height)
+    
+    cxt.fillStyle = ball.color
+    cxt.beginPath()
+    cxt.arc( ball.x , ball.y , ball.r , 0 , 2*Math.PI )
+    cxt.closePath()
+
+    cxt.fill()
+  }
+</script>
+</body>
+</html>
